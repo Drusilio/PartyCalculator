@@ -14,8 +14,24 @@ class Report
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\OneToOne(inversedBy: 'eventReport', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Event $event = null;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getEvent(): ?Event
+    {
+        return $this->event;
+    }
+
+    public function setEvent(Event $event): self
+    {
+        $this->event = $event;
+
+        return $this;
     }
 }

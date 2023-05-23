@@ -13,40 +13,20 @@ class Transaction
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $debtorName = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $recipientName = null;
-
     #[ORM\Column]
     private ?bool $isSent = null;
+
+    #[ORM\ManyToOne(inversedBy: 'userDebts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $debtor = null;
+
+    #[ORM\ManyToOne(inversedBy: 'requestedTransactions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $recipient = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getRecipientName(): ?string
-    {
-        return $this->recipientName;
-    }
-
-    public function setRecipientName(string $recipientName): self
-    {
-        $this->recipientName = $recipientName;
-
-        return $this;
-    }
-
-    public function getDebtorName(): ?string
-    {
-        return $this->debtorName;
-    }
-
-    public function setDebtorName(?string $debtorName): void
-    {
-        $this->debtorName = $debtorName;
     }
 
     public function getIsSent(): ?bool
@@ -57,5 +37,29 @@ class Transaction
     public function setIsSent(?bool $isSent): void
     {
         $this->isSent = $isSent;
+    }
+
+    public function getDebtor(): ?User
+    {
+        return $this->debtor;
+    }
+
+    public function setDebtor(?User $debtor): self
+    {
+        $this->debtor = $debtor;
+
+        return $this;
+    }
+
+    public function getRecipient(): ?User
+    {
+        return $this->recipient;
+    }
+
+    public function setRecipient(?User $recipient): self
+    {
+        $this->recipient = $recipient;
+
+        return $this;
     }
 }

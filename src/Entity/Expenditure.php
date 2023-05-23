@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ExpenditureRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ExpenditureRepository::class)]
@@ -18,6 +20,14 @@ class Expenditure
 
     #[ORM\Column]
     private ?float $amountSpent = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'expenditureList')]
+    private Collection $subscribeUsers;
+
+    public function __construct()
+    {
+        $this->subscribeUsers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -44,6 +54,30 @@ class Expenditure
     public function setAmountSpent(float $amountSpent): self
     {
         $this->amountSpent = $amountSpent;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getSubscribeUsers(): Collection
+    {
+        return $this->subscribeUsers;
+    }
+
+    public function addSubscribeUser(User $subscribeUser): self
+    {
+        if (!$this->subscribeUsers->contains($subscribeUser)) {
+            $this->subscribeUsers->add($subscribeUser);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscribeUser(User $subscribeUser): self
+    {
+        $this->subscribeUsers->removeElement($subscribeUser);
 
         return $this;
     }
