@@ -24,6 +24,12 @@ class Transaction
     #[ORM\JoinColumn(nullable: false)]
     private ?User $recipient = null;
 
+    #[ORM\ManyToOne(inversedBy: 'defaultTransactions')]
+    private ?Report $defaultReport = null;
+
+    #[ORM\ManyToOne(inversedBy: 'optimalTransactions')]
+    private ?Report $optimalReport = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +65,30 @@ class Transaction
     public function setRecipient(?User $recipient): self
     {
         $this->recipient = $recipient;
+
+        return $this;
+    }
+
+    public function getDefaultReport(): ?Report
+    {
+        return $this->defaultReport;
+    }
+
+    public function setDefaultReport(?Report $defaultReport): self
+    {
+        $this->defaultReport = $defaultReport;
+
+        return $this;
+    }
+
+    public function getOptimalReport(): ?Report
+    {
+        return $this->optimalReport;
+    }
+
+    public function setOptimalReport(?Report $optimalReport): self
+    {
+        $this->optimalReport = $optimalReport;
 
         return $this;
     }

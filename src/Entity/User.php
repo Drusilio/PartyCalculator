@@ -29,6 +29,7 @@ class User
 
     #[ORM\ManyToMany(targetEntity: Expenditure::class, mappedBy: 'subscribeUsers')]
     private Collection $expenditureList;
+
     public function __construct()
     {
         $this->expenditureList = new ArrayCollection();
