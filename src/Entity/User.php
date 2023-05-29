@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
@@ -14,6 +15,9 @@ class User
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column]
+    private Uuid $uuid;
 
     #[ORM\Column(length: 255)]
     private string $name;
@@ -35,6 +39,12 @@ class User
         $this->expenditureList = new ArrayCollection();
         $this->userDebts = new ArrayCollection();
         $this->requestedTransactions = new ArrayCollection();
+        $this->uuid = Uuid::v6();
+    }
+
+    public function getUuid(): Uuid
+    {
+        return $this->uuid;
     }
 
     public function getId(): ?int
