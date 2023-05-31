@@ -6,6 +6,7 @@ use App\Repository\ExpenditureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ExpenditureRepository::class)]
 class Expenditure
@@ -14,6 +15,9 @@ class Expenditure
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(type: 'uuid', unique: true)]
+    private Uuid $uuid;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -24,9 +28,19 @@ class Expenditure
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'expenditureList')]
     private Collection $subscribeUsers;
 
+    #[ORM\ManyToOne(inversedBy: 'expenditureList')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Event $event = null;
+
     public function __construct()
     {
         $this->subscribeUsers = new ArrayCollection();
+        $this->uuid = Uuid::v6();
+    }
+
+    public function getUuid(): Uuid
+    {
+        return $this->uuid;
     }
 
     public function getId(): ?int
@@ -78,6 +92,18 @@ class Expenditure
     public function removeSubscribeUser(User $subscribeUser): self
     {
         $this->subscribeUsers->removeElement($subscribeUser);
+
+        return $this;
+    }
+
+    public function getEvent(): ?Event
+    {
+        return $this->event;
+    }
+
+    public function setEvent(?Event $event): self
+    {
+        $this->event = $event;
 
         return $this;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\UserRepository;
@@ -16,7 +18,7 @@ class User
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'uuid', unique: true)]
     private Uuid $uuid;
 
     #[ORM\Column(length: 255)]
@@ -34,12 +36,16 @@ class User
     #[ORM\ManyToMany(targetEntity: Expenditure::class, mappedBy: 'subscribeUsers')]
     private Collection $expenditureList;
 
+    #[ORM\ManyToMany(targetEntity: Event::class, inversedBy: 'users')]
+    private Collection $events;
+
     public function __construct()
     {
         $this->expenditureList = new ArrayCollection();
         $this->userDebts = new ArrayCollection();
         $this->requestedTransactions = new ArrayCollection();
         $this->uuid = Uuid::v6();
+        $this->events = new ArrayCollection();
     }
 
     public function getUuid(): Uuid
@@ -153,6 +159,30 @@ class User
         if ($this->expenditureList->removeElement($expenditureList)) {
             $expenditureList->removeSubscribeUser($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        $this->events->removeElement($event);
 
         return $this;
     }

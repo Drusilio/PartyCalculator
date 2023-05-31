@@ -3,9 +3,11 @@
 namespace App\Controller\UserController\Dto;
 
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CreateUserDto
 {
+    #[NotBlank(allowNull: false)]
     private string $name;
 
     private string $paymentMethods;

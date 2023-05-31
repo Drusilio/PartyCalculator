@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
 class Transaction
@@ -12,6 +13,9 @@ class Transaction
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(type: 'uuid', unique: true)]
+    private Uuid $uuid;
 
     #[ORM\Column]
     private ?bool $isSent = null;
@@ -29,6 +33,16 @@ class Transaction
 
     #[ORM\ManyToOne(inversedBy: 'optimalTransactions')]
     private ?Report $optimalReport = null;
+
+    public function __construct()
+    {
+        $this->uuid = Uuid::v6();
+    }
+
+    public function getUuid(): Uuid
+    {
+        return $this->uuid;
+    }
 
     public function getId(): ?int
     {
