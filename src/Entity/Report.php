@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ReportRepository::class)]
 class Report
@@ -15,6 +16,9 @@ class Report
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(type: 'uuid', unique: true)]
+    private Uuid $uuid;
 
     #[ORM\OneToOne(inversedBy: 'eventReport', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -30,8 +34,13 @@ class Report
     {
         $this->defaultTransactions = new ArrayCollection();
         $this->optimalTransactions = new ArrayCollection();
+        $this->uuid = Uuid::v6();
     }
 
+    public function getUuid(): Uuid
+    {
+        return $this->uuid;
+    }
     public function getId(): ?int
     {
         return $this->id;
