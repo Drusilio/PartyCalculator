@@ -28,7 +28,7 @@ class Event
     #[ORM\OneToOne(mappedBy: 'event', cascade: ['persist', 'remove'])]
     private ?Report $eventReport = null;
 
-    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Expenditure::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Expenditure::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $expenditureList;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'events')]

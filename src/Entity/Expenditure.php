@@ -20,21 +20,25 @@ class Expenditure
     private Uuid $uuid;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column]
-    private ?float $amountSpent = null;
+    private float $amountSpent;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'expenditureList')]
-    private Collection $subscribeUsers;
+    private Collection $subscribers;
 
     #[ORM\ManyToOne(inversedBy: 'expenditureList')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Event $event = null;
+    private Event $event;
+
+    #[ORM\ManyToOne(inversedBy: 'expenditures')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $expensist = null;
 
     public function __construct()
     {
-        $this->subscribeUsers = new ArrayCollection();
+        $this->subscribers = new ArrayCollection();
         $this->uuid = Uuid::v6();
     }
 
@@ -75,35 +79,48 @@ class Expenditure
     /**
      * @return Collection<int, User>
      */
-    public function getSubscribeUsers(): Collection
+    public function getSubscribers(): Collection
     {
-        return $this->subscribeUsers;
+        return $this->subscribers;
     }
 
-    public function addSubscribeUser(User $subscribeUser): self
+    public function addSubscribers(User $subscribeUser): self
     {
-        if (!$this->subscribeUsers->contains($subscribeUser)) {
-            $this->subscribeUsers->add($subscribeUser);
+        if (!$this->subscribers->contains($subscribeUser)) {
+            $this->subscribers->add($subscribeUser);
         }
 
         return $this;
     }
 
-    public function removeSubscribeUser(User $subscribeUser): self
+    public function removeSubscribers(User $subscribeUser): self
     {
-        $this->subscribeUsers->removeElement($subscribeUser);
+        $this->subscribers->removeElement($subscribeUser);
 
         return $this;
     }
 
-    public function getEvent(): ?Event
+    public function getEvent(): Event
     {
         return $this->event;
     }
 
-    public function setEvent(?Event $event): self
+    public function setEvent(
+        Event $event): self
     {
         $this->event = $event;
+
+        return $this;
+    }
+
+    public function getExpensist(): ?User
+    {
+        return $this->expensist;
+    }
+
+    public function setExpensist(?User $expensist): self
+    {
+        $this->expensist = $expensist;
 
         return $this;
     }

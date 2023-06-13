@@ -34,18 +34,23 @@ class User
     private string $paymentMethods;
 
     #[ORM\ManyToMany(targetEntity: Expenditure::class, mappedBy: 'subscribeUsers')]
-    private Collection $expenditureList;
+    private Collection $expenditureSubscriptions;
 
     #[ORM\ManyToMany(targetEntity: Event::class, inversedBy: 'users')]
     private Collection $events;
 
+    /* Expenditures made by this user */
+    #[ORM\OneToMany(mappedBy: 'expensist', targetEntity: Expenditure::class)]
+    private Collection $expenditures;
+
     public function __construct()
     {
-        $this->expenditureList = new ArrayCollection();
+        $this->expenditureSubscriptions = new ArrayCollection();
         $this->userDebts = new ArrayCollection();
         $this->requestedTransactions = new ArrayCollection();
         $this->uuid = Uuid::v6();
         $this->events = new ArrayCollection();
+        $this->expenditures = new ArrayCollection();
     }
 
     public function getUuid(): Uuid
@@ -139,16 +144,16 @@ class User
     /**
      * @return Collection<int, Expenditure>
      */
-    public function getExpenditureList(): Collection
+    public function getExpenditureSubscriptions(): Collection
     {
-        return $this->expenditureList;
+        return $this->expenditureSubscriptions;
     }
 
     public function addExpenditureList(Expenditure $expenditureList): self
     {
-        if (!$this->expenditureList->contains($expenditureList)) {
-            $this->expenditureList->add($expenditureList);
-            $expenditureList->addSubscribeUser($this);
+        if (!$this->expenditureSubscriptions->contains($expenditureList)) {
+            $this->expenditureSubscriptions->add($expenditureList);
+            $expenditureList->addSubscribers($this);
         }
 
         return $this;
@@ -156,8 +161,8 @@ class User
 
     public function removeExpenditureList(Expenditure $expenditureList): self
     {
-        if ($this->expenditureList->removeElement($expenditureList)) {
-            $expenditureList->removeSubscribeUser($this);
+        if ($this->expenditureSubscriptions->removeElement($expenditureList)) {
+            $expenditureList->removeSubscribers($this);
         }
 
         return $this;
@@ -183,6 +188,40 @@ class User
     public function removeEvent(Event $event): self
     {
         $this->events->removeElement($event);
+
+        return $this;
+    }
+
+    public function getExpenditures(): ?Expenditure
+    {
+        return $this->expenditures;
+    }
+
+    public function setExpenditures(?Expenditure $expenditures): self
+    {
+        $this->expenditures = $expenditures;
+
+        return $this;
+    }
+
+    public function addExpenditure(Expenditure $expenditure): self
+    {
+        if (!$this->expenditures->contains($expenditure)) {
+            $this->expenditures->add($expenditure);
+            $expenditure->setExpensist($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpenditure(Expenditure $expenditure): self
+    {
+        if ($this->expenditures->removeElement($expenditure)) {
+            // set the owning side to null (unless already changed)
+            if ($expenditure->getExpensist() === $this) {
+                $expenditure->setExpensist(null);
+            }
+        }
 
         return $this;
     }
