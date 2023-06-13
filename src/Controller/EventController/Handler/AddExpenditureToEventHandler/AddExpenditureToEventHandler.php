@@ -21,7 +21,7 @@ class AddExpenditureToEventHandler implements AddExpenditureToEventHandlerInterf
         $expenditure = new Expenditure();
         $expenditure->setName($addExpenditureToEventDto->getExpenditureName());
         $expenditure->setAmountSpent($addExpenditureToEventDto->getAmountSpent());
-        $expenditure->addSubscribers($user);
+        $expenditure->addSubscriber($user);
         $expenditure->setEvent($event);
         $expenditure->setExpensist($user);
         $event->addExpenditureList($expenditure);

@@ -84,7 +84,7 @@ class Expenditure
         return $this->subscribers;
     }
 
-    public function addSubscribers(User $subscribeUser): self
+    public function addSubscriber(User $subscribeUser): self
     {
         if (!$this->subscribers->contains($subscribeUser)) {
             $this->subscribers->add($subscribeUser);
@@ -93,7 +93,7 @@ class Expenditure
         return $this;
     }
 
-    public function removeSubscribers(User $subscribeUser): self
+    public function removeSubscriber(User $subscribeUser): self
     {
         $this->subscribers->removeElement($subscribeUser);
 

@@ -153,7 +153,7 @@ class User
     {
         if (!$this->expenditureSubscriptions->contains($expenditureList)) {
             $this->expenditureSubscriptions->add($expenditureList);
-            $expenditureList->addSubscribers($this);
+            $expenditureList->addSubscriber($this);
         }
 
         return $this;
@@ -162,7 +162,7 @@ class User
     public function removeExpenditureList(Expenditure $expenditureList): self
     {
         if ($this->expenditureSubscriptions->removeElement($expenditureList)) {
-            $expenditureList->removeSubscribers($this);
+            $expenditureList->removeSubscriber($this);
         }
 
         return $this;
@@ -192,16 +192,9 @@ class User
         return $this;
     }
 
-    public function getExpenditures(): ?Expenditure
+    public function getExpenditures(): Collection
     {
         return $this->expenditures;
-    }
-
-    public function setExpenditures(?Expenditure $expenditures): self
-    {
-        $this->expenditures = $expenditures;
-
-        return $this;
     }
 
     public function addExpenditure(Expenditure $expenditure): self
