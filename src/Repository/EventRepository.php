@@ -30,4 +30,12 @@ class EventRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function getEventsList(){
+        $queryBuilder = $this->createQueryBuilder('e')
+            ->select('e.name, e.uuid, e.isCompleted, r.uuid')
+            ->leftJoin('e.eventReport', 'r');
+
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
 }
