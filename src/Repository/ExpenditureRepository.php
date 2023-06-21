@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Expenditure;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
+use Symfony\Component\Uid\Uuid;
 
 class ExpenditureRepository extends ServiceEntityRepository
 {
@@ -29,5 +31,13 @@ class ExpenditureRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getByUuid(Uuid $uuid):Expenditure {
+        $expenditure = $this->findOneBy(['uuid'=>$uuid]);
+        if ($expenditure === null) {
+            throw new Exception('Expenditure not found');
+        }
+        return $expenditure;
     }
 }

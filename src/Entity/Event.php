@@ -153,6 +153,7 @@ class Event
                 return true;
             }
         }
+
         return false;
     }
 }

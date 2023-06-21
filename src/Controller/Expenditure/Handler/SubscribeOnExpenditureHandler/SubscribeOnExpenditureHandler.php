@@ -18,12 +18,12 @@ class SubscribeOnExpenditureHandler implements SubscribeOnExpenditureHandlerInte
      * @throws Exception
      */
     public function handle(SubscribeOnExpenditureDto $dto, User $user){
-        $event = $this->eventRepository->findOneBy(['uuid'=>$dto->getEventUuid()]);
-        $expenditure = $this->expenditureRepository->findOneBy(['uuid'=>$dto->getExpenditureUuid()]);
+        $event = $this->eventRepository->getByUuid($dto->getEventUuid());
+        $expenditure = $this->expenditureRepository->getByUuid($dto->getExpenditureUuid());
         if (!$event->isUserSubscribed($user)){
             throw new Exception('You do not subscribed on event for this expenditure');
         }
-            $expenditure->addSubscriber($user);
-            $this->expenditureRepository->save($expenditure, true);
+        $expenditure->addSubscriber($user);
+        $this->expenditureRepository->save($expenditure, true);
     }
 }
