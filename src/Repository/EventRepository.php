@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
+use Symfony\Component\Uid\Uuid;
 
 class EventRepository extends ServiceEntityRepository
 {
@@ -37,5 +39,13 @@ class EventRepository extends ServiceEntityRepository
             ->leftJoin('e.eventReport', 'r');
 
         return $queryBuilder->getQuery()->getArrayResult();
+    }
+
+    public function getByUuid(Uuid $uuid):Event {
+        $event = $this->findOneBy(['uuid'=>$uuid]);
+        if ($event === null) {
+            throw new Exception('Event not found');
+        }
+        return $event;
     }
 }
