@@ -38,4 +38,8 @@ class EventRepository extends ServiceEntityRepository
 
         return $queryBuilder->getQuery()->getArrayResult();
     }
+
+    public function showEvent(){
+
+    }
 }
