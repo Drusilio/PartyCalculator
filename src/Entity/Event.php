@@ -146,4 +146,13 @@ class Event
 
         return $this;
     }
+
+    public function isUserSubscribed(User $user):bool{
+        foreach ($this->getUsers() as $value) {
+            if ($value->getUuid() == $user->getUuid()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
