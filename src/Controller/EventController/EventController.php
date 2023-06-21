@@ -6,10 +6,12 @@ use App\ArgumentResolver\AttributeArgument;
 use App\Controller\EventController\Dto\AddExpenditureToEventDto;
 use App\Controller\EventController\Dto\AddUserToEventDto;
 use App\Controller\EventController\Dto\CreateEventDto;
+use App\Controller\EventController\Dto\ShowEventDto;
 use App\Controller\EventController\Handler\AddExpenditureToEventHandler\AddExpenditureToEventHandlerInterface;
 use App\Controller\EventController\Handler\AddUserToEventHandler\AddUserToEventHandlerInterface;
 use App\Controller\EventController\Handler\CreateEventHandler\CreateEventHandlerInterface;
 use App\Controller\EventController\Handler\GetEventsListHandler\GetEventsListHandlerInterface;
+use App\Controller\EventController\Handler\ShowEventHandler\ShowEventHandlerInterface;
 use App\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,5 +46,12 @@ class EventController extends AbstractController
     public function getEventsList(GetEventsListHandlerInterface $eventsListHandler): array
     {
         return $eventsListHandler->handle();
+    }
+
+    #[Route('/show-event', methods: [Request::METHOD_POST])]
+    public function showEvent(#[AttributeArgument] ShowEventDto $dto, ShowEventHandlerInterface $handler, UserExtractor $userExtractor): array {
+        $user = $userExtractor->extract();
+
+        return $handler->handle($dto, $user);
     }
 }
