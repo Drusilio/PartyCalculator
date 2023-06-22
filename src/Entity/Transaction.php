@@ -34,6 +34,9 @@ class Transaction
     #[ORM\ManyToOne(inversedBy: 'optimalTransactions')]
     private ?Report $optimalReport = null;
 
+    #[ORM\Column]
+    private float $amountSpent;
+
     public function __construct()
     {
         $this->uuid = Uuid::v6();
@@ -47,6 +50,18 @@ class Transaction
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getAmountSpent(): float
+    {
+        return $this->amountSpent;
+    }
+
+    public function setAmountSpent(float $amountSpent): self
+    {
+        $this->amountSpent = $amountSpent;
+
+        return $this;
     }
 
     public function getIsSent(): ?bool

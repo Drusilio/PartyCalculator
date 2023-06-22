@@ -4,8 +4,10 @@ namespace App\Controller\EventController\Handler\ShowEventHandler;
 
 use App\Controller\EventController\Dto\ShowEventDto;
 use App\Entity\Event;
+use App\Entity\Transaction;
 use App\Entity\User;
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\Collection;
 
 class ShowEventHandler implements ShowEventHandlerInterface
 {
@@ -14,7 +16,7 @@ class ShowEventHandler implements ShowEventHandlerInterface
     }
 
     public function handle(ShowEventDto $dto, User $user): array{
-        $event = $this->repository->findOneBy(['uuid' => $dto->getUuid()]);
+        $event = $this->repository->getByUuid($dto->getUuid());
         if ($event->getIsCompleted()) {
             return $this->showCompletedEvent($event, $user);
         } else {
@@ -23,26 +25,45 @@ class ShowEventHandler implements ShowEventHandlerInterface
     }
 
     private function showUncompletedEvent(Event $event, User $user): array{
-        $users = $event->getUsers();
-        $subscriptionStatus = false;
-        $userUuid = $user->getUuid();
-        foreach ($users as $value) {
-            if ($value->getUuid() == $userUuid) {
-                $subscriptionStatus = true;
-            }
-        }
         return [
-            'Uuid' => $event->getUuid(),
-            'Name' => $event->getName(),
-            'Subscription status' => $subscriptionStatus
+            'uuid' => $event->getUuid(),
+            'name' => $event->getName(),
+            'subscriptionStatus' => $event->isUserSubscribed($user)
         ];
     }
 
-    private function showCompletedEvent(Event $event, User $user): array{
+    private function showCompletedEvent(Event $event, User $user): array
+    {
         $report = $event->getEventReport();
+
         return [
-            'default transactions' => $report->getDefaultTransactions(),
-            '$optimal transactions' => $report->getOptimalTransactions()
+            'defaultTransactions' => $this->convertTransactionCollectionToViewForm($report->getDefaultTransactions()),
+            'optimalTransactions' => $this->convertTransactionCollectionToViewForm($report->getOptimalTransactions()),
         ];
+    }
+
+    /**
+     * @param Collection<Transaction> $transactions
+     */
+    private function convertTransactionCollectionToViewForm(Collection $transactions): array
+    {
+        $response = [];
+        foreach ($transactions as $transaction) {
+            $response[] = [
+                'uuid' => $transaction->getUuid(),
+                'isSent' => $transaction->getIsSent(),
+                'amount' => $transaction->getAmountSpent(),
+                'debtor' => [
+                    'uuid' => $transaction->getDebtor()->getUuid(),
+                    'name' => $transaction->getDebtor()->getName(),
+                ],
+                'recipient' => [
+                    'uuid' => $transaction->getRecipient()->getUuid(),
+                    'name' => $transaction->getRecipient()->getName(),
+                ],
+            ];
+        }
+
+        return $response;
     }
 }

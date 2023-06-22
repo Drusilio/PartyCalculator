@@ -48,7 +48,7 @@ class EventController extends AbstractController
         return $eventsListHandler->handle();
     }
 
-    #[Route('/show-event', methods: [Request::METHOD_POST])]
+    #[Route('/show-event', methods: [Request::METHOD_GET])]
     public function showEvent(#[AttributeArgument] ShowEventDto $dto, ShowEventHandlerInterface $handler, UserExtractor $userExtractor): array {
         $user = $userExtractor->extract();
 

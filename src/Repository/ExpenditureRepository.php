@@ -38,6 +38,7 @@ class ExpenditureRepository extends ServiceEntityRepository
         if ($expenditure === null) {
             throw new Exception('Expenditure not found');
         }
+
         return $expenditure;
     }
 }
