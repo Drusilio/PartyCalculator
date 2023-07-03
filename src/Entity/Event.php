@@ -42,7 +42,6 @@ class Event
         $this->isCompleted = false;
     }
 
-
     public function getUuid(): Uuid
     {
         return $this->uuid;

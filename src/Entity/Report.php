@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\ReportRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -74,6 +73,11 @@ class Report
         }
 
         return $this;
+    }
+
+    public function setDefaultTransactions(array $defaultTransactions)
+    {
+        $this->defaultTransactions = new ArrayCollection($defaultTransactions);
     }
 
     public function removeDefaultTransaction(Transaction $defaultTransaction): self
