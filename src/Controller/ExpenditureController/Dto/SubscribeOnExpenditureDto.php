@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Expenditure\Dto;
+namespace App\Controller\ExpenditureController\Dto;
 
 use Symfony\Component\Uid\Uuid;
 

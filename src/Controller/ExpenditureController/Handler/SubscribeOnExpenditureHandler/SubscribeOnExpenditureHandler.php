@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\Expenditure\Handler\SubscribeOnExpenditureHandler;
+namespace App\Controller\ExpenditureController\Handler\SubscribeOnExpenditureHandler;
 
-use App\Controller\Expenditure\Dto\SubscribeOnExpenditureDto;
+use App\Controller\ExpenditureController\Dto\SubscribeOnExpenditureDto;
 use App\Entity\User;
 use App\Repository\EventRepository;
 use App\Repository\ExpenditureRepository;

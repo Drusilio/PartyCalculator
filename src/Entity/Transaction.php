@@ -18,15 +18,15 @@ class Transaction
     private Uuid $uuid;
 
     #[ORM\Column]
-    private ?bool $isSent = null;
+    private bool $isSent;
 
     #[ORM\ManyToOne(inversedBy: 'userDebts')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $debtor = null;
+    private User $debtor;
 
     #[ORM\ManyToOne(inversedBy: 'requestedTransactions')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $recipient = null;
+    private User $recipient;
 
     #[ORM\ManyToOne(inversedBy: 'defaultTransactions')]
     private ?Report $defaultReport = null;
@@ -37,9 +37,13 @@ class Transaction
     #[ORM\Column]
     private float $amountSpent;
 
-    public function __construct()
+    public function __construct(User $debtor, User $recipient, float $amountSpent)
     {
+        $this->debtor = $debtor;
+        $this->recipient = $recipient;
+        $this->amountSpent = $amountSpent;
         $this->uuid = Uuid::v6();
+        $this->isSent = false;
     }
 
     public function getUuid(): Uuid
@@ -64,34 +68,34 @@ class Transaction
         return $this;
     }
 
-    public function getIsSent(): ?bool
+    public function getIsSent(): bool
     {
         return $this->isSent;
     }
 
-    public function setIsSent(?bool $isSent): void
+    public function setIsSent(bool $isSent): void
     {
         $this->isSent = $isSent;
     }
 
-    public function getDebtor(): ?User
+    public function getDebtor(): User
     {
         return $this->debtor;
     }
 
-    public function setDebtor(?User $debtor): self
+    public function setDebtor(User $debtor): self
     {
         $this->debtor = $debtor;
 
         return $this;
     }
 
-    public function getRecipient(): ?User
+    public function getRecipient(): User
     {
         return $this->recipient;
     }
 
-    public function setRecipient(?User $recipient): self
+    public function setRecipient(User $recipient): self
     {
         $this->recipient = $recipient;
 

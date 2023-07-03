@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller\Expenditure;
+namespace App\Controller\ExpenditureController;
 
 use App\ArgumentResolver\AttributeArgument;
-use App\Controller\Expenditure\Dto\SubscribeOnExpenditureDto;
-use App\Controller\Expenditure\Handler\SubscribeOnExpenditureHandler\SubscribeOnExpenditureHandlerInterface;
+use App\Controller\ExpenditureController\Dto\SubscribeOnExpenditureDto;
+use App\Controller\ExpenditureController\Handler\SubscribeOnExpenditureHandler\SubscribeOnExpenditureHandlerInterface;
 use App\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
