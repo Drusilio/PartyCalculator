@@ -36,7 +36,22 @@ services:
             - symfony
         env_file:
             - .env.nginx.local
-
+    ngrok:
+        image: ngrok/ngrok:latest
+        restart: unless-stopped
+        command:
+            - "start"
+            - "--all"
+            - "--config"
+            - "/etc/ngrok.yml"
+        extra_hosts:
+            - "test.drus:172.19.0.5"
+        volumes:
+            - ./ngrok.yml:/etc/ngrok.yml
+        ports:
+            - 4040:4040
+        networks:
+            - symfony
 volumes:
     symfony_dockerized_app_sync:
 

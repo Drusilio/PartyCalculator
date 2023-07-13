@@ -1,0 +1,5 @@
+version: "2"
+tunnels:
+  first-app:
+    addr: "nginx:80"
+    proto: http
