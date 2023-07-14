@@ -3,3 +3,4 @@ tunnels:
   first-app:
     addr: "nginx:80"
     proto: http
+api_key: 2SWoZ2KK4lEAjZgqjp2htH511bX_5axWWGPUc91jbri5sjfx7

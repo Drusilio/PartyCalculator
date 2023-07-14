@@ -34,9 +34,6 @@ final class Version20230531103324 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_723705D1D17F50A6 ON transaction (uuid)');
         $this->addSql('ALTER TABLE user CHANGE uuid uuid BINARY(16) NOT NULL COMMENT \'(DC2Type:uuid)\'');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649D17F50A6 ON user (uuid)');
-        $this->addSql('ALTER TABLE user_event CHANGE user_id user_id INT NOT NULL');
-        $this->addSql('ALTER TABLE user_event ADD CONSTRAINT FK_D96CF1FFA76ED395 FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE user_event ADD CONSTRAINT FK_D96CF1FF71F7E88B FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE');
     }
 
     public function down(Schema $schema): void
@@ -44,9 +41,6 @@ final class Version20230531103324 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP INDEX UNIQ_C42F7784D17F50A6 ON report');
         $this->addSql('ALTER TABLE report DROP uuid');
-        $this->addSql('ALTER TABLE user_event DROP FOREIGN KEY FK_D96CF1FFA76ED395');
-        $this->addSql('ALTER TABLE user_event DROP FOREIGN KEY FK_D96CF1FF71F7E88B');
-        $this->addSql('ALTER TABLE user_event CHANGE user_id user_id BINARY(16) NOT NULL COMMENT \'(DC2Type:uuid)\'');
         $this->addSql('DROP INDEX UNIQ_8D93D649D17F50A6 ON user');
         $this->addSql('ALTER TABLE user CHANGE uuid uuid VARCHAR(255) NOT NULL');
         $this->addSql('DROP INDEX UNIQ_723705D1D17F50A6 ON transaction');
