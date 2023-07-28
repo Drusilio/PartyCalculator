@@ -17,6 +17,7 @@ class CreateUserHandler implements CreateUserHandlerInterface
     {
         $user = new User();
         $user->setName($dto->getName());
+        $user->setTelegramId($dto->getTelegramId());
         $user->setPaymentMethods($dto->getPaymentMethods());
 
         $this->repository->save($user, true);

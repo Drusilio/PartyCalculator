@@ -2,6 +2,9 @@
 
 namespace App\Controller\TelegramBot;
 
+use App\Controller\UserController\Dto\CreateUserDto;
+use App\Controller\UserController\Handler\CreateUserHandler\CreateUserHandlerInterface;
+use App\TelegramBotCommand\CommandFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,34 +14,33 @@ use Telegram\Bot\Objects\Update as UpdateObject;
 #[Route('/bot')]
 class TelegramBotController  extends AbstractController
 {
+    public function __construct(private readonly CommandFactory $commandFactory)
+        {
+
+        }
+
     #[Route('/webhook', methods: [Request::METHOD_POST])]
-    public function webhook()
+    public function webhook(
+        string $telegramApiKey
+    )
     {
-        $telegram = new Api('6342601130:AAG2aWe73GcHOlcWk-LWsBFVioGBgqiyxN4');
+        $telegram = new Api($telegramApiKey);
         $result = $telegram->getWebhookUpdates();
 
-        $text = $result->getMessage();
-        $text->
-        $chat_id = $result["message"]["chat"]["id"];
+        list($botCommand, $messageText) = $this->commandTextDevider($result);
 
-        if($text == '/start') {
-            $reply = "Hello World";
-            $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
-        }
-
-        if($text == '/create_user') {
-            $reply = "You are in!";
-            $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
-        }
+        $command = $this->commandFactory->createCommand($botCommand);
+        $command->execute($telegram, $result, $botCommand, $messageText);
     }
 
     private function commandTextDevider(UpdateObject $result)
     {
-        /*$text = $result["message"]["text"];
-        $offset = $result["message"]["entities"]["offset"];
-        $length = $result["message"]["entities"]["length"];
-        $botCommand = $result;
-        $messagaText = ;
-        return [$botCommand, $messagaText];*/
+        $text = $result["message"]["text"];
+        $offset = $result["message"]["entities"][0]["offset"];
+        $commandLength = $result["message"]["entities"][0]["length"];
+        $botCommand = substr($text, $offset, $commandLength);
+        $messageText = substr($text, $commandLength + 1);
+
+        return [$botCommand, $messageText];
     }
 }

@@ -16,7 +16,10 @@ class User
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
+
+    #[ORM\Column]
+    private int $telegramId;
 
     #[ORM\Column(type: 'uuid', unique: true)]
     private Uuid $uuid;
@@ -58,7 +61,7 @@ class User
         return $this->uuid;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -217,5 +220,15 @@ class User
         }
 
         return $this;
+    }
+
+    public function getTelegramId(): int
+    {
+        return $this->telegramId;
+    }
+
+    public function setTelegramId(int $telegramId): void
+    {
+        $this->telegramId = $telegramId;
     }
 }
