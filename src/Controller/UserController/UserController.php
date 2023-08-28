@@ -14,7 +14,7 @@ use Symfony\Component\Uid\Uuid;
 class UserController extends AbstractController
 {
     #[Route('/create', methods: [Request::METHOD_POST])]
-    public function createUser(#[AttributeArgument] CreateUserDto $createUserDto, CreateUserHandlerInterface $createUserHandler):Uuid
+    public function createUser(#[AttributeArgument] CreateUserDto $createUserDto, CreateUserHandlerInterface $createUserHandler): Uuid
     {
         return $createUserHandler->handle($createUserDto);
     }

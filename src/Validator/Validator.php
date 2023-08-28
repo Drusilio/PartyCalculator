@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Validator;
 
 use App\Exception\ValidationException;
-use Exception;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface as SymfonyValidator;
 
@@ -15,7 +14,7 @@ class Validator implements ValidatorInterface
     {
     }
 
-    /** @throws Exception */
+    /** @throws \Exception */
     public function validate(mixed $dataToValidate): void
     {
         $violationList = $this->validator->validate($dataToValidate);

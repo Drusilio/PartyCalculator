@@ -6,13 +6,12 @@ use App\Controller\EventController\Dto\AddExpenditureToEventDto;
 use App\Entity\Expenditure;
 use App\Entity\User;
 use App\Repository\EventRepository;
-use App\Repository\ExpenditureRepository;
 use Symfony\Component\Uid\Uuid;
 
 class AddExpenditureToEventHandler implements AddExpenditureToEventHandlerInterface
 {
-    public function __construct(private readonly EventRepository $eventRepository){
-
+    public function __construct(private readonly EventRepository $eventRepository)
+    {
     }
 
     public function handle(AddExpenditureToEventDto $addExpenditureToEventDto, User $user): Uuid

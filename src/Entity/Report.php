@@ -40,6 +40,7 @@ class Report
     {
         return $this->uuid;
     }
+
     public function getId(): ?int
     {
         return $this->id;

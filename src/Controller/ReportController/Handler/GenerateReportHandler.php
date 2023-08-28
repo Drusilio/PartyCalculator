@@ -19,8 +19,8 @@ class GenerateReportHandler implements GenerateReportHandlerInterface
                                 private readonly EventRepository $eventRepository,
                                 private readonly DebtsExtractorService $debtsExtractorService,
                                 private readonly TransactionRepository $transactionRepository,
-                                private readonly ResponseGenerateReportDto $responseGenerateReportDto){
-
+                                private readonly ResponseGenerateReportDto $responseGenerateReportDto)
+    {
     }
 
     public function handle(GenerateReportDto $dto): array
@@ -29,7 +29,7 @@ class GenerateReportHandler implements GenerateReportHandlerInterface
         $event = $this->eventRepository->getByUuid($dto->getEventUuid());
 
         $report->setDefaultTransactions(
-               $this->generateDefaultTransactions($event)
+            $this->generateDefaultTransactions($event)
         );
         $event->setIsCompleted(true);
         $this->debtsExtractorService->extractDebts($event->getExpenditureList());
@@ -48,9 +48,9 @@ class GenerateReportHandler implements GenerateReportHandlerInterface
         $n = $event->getUsers()->count();
         $usersArray = [];
         $i = 0;
-        foreach ($event->getUsers() as $user){
+        foreach ($event->getUsers() as $user) {
             $usersArray[$i] = $user;
-            $i++;
+            ++$i;
         }
 
         $matrix = array_fill(0, $n, array_fill(0, $n, 0));
@@ -59,18 +59,18 @@ class GenerateReportHandler implements GenerateReportHandlerInterface
         return $this->makeTransactionsArray($matrix, $usersArray, $n);
     }
 
-    private function userIndexInMatrix(User $user, array $usersArray) : int
+    private function userIndexInMatrix(User $user, array $usersArray): int
     {
         return array_search($user, $usersArray);
     }
 
-    private function fillMatrix(array $usersArray, array $debts, array $matrix) : array
+    private function fillMatrix(array $usersArray, array $debts, array $matrix): array
     {
         foreach ($debts as $debt) {
             $b = max($this->userIndexInMatrix($debt->getUserTo(), $usersArray), $this->userIndexInMatrix($debt->getUserFrom(), $usersArray));
             $a = min($this->userIndexInMatrix($debt->getUserTo(), $usersArray), $this->userIndexInMatrix($debt->getUserFrom(), $usersArray));
 
-            if($b == $this->userIndexInMatrix($debt->getUserFrom(), $usersArray)){
+            if ($b == $this->userIndexInMatrix($debt->getUserFrom(), $usersArray)) {
                 $sign = -1;
             } else {
                 $sign = 1;
@@ -82,12 +82,12 @@ class GenerateReportHandler implements GenerateReportHandlerInterface
         return $matrix;
     }
 
-    private function makeTransactionsArray(array $matrix, array $usersArray, int $n) : array
+    private function makeTransactionsArray(array $matrix, array $usersArray, int $n): array
     {
         $transactionsArray = [];
-        for ($i = 0; $i <= ($n-1); $i++) {
-            for($j = 0; $j <= $i; $j++) {
-                if ($matrix[$i][$j] === 0) {
+        for ($i = 0; $i <= ($n - 1); ++$i) {
+            for ($j = 0; $j <= $i; ++$j) {
+                if (0 === $matrix[$i][$j]) {
                     continue;
                 }
 

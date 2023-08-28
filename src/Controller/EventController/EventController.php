@@ -22,21 +22,24 @@ use Symfony\Component\Uid\Uuid;
 class EventController extends AbstractController
 {
     #[Route('/create', methods: [Request::METHOD_POST])]
-    public function createEvent(#[AttributeArgument] CreateEventDto $createEventDto, CreateEventHandlerInterface $createEventHandler, UserExtractor $userExtractor): Uuid {
+    public function createEvent(#[AttributeArgument] CreateEventDto $createEventDto, CreateEventHandlerInterface $createEventHandler, UserExtractor $userExtractor): Uuid
+    {
         $user = $userExtractor->extract();
 
         return $createEventHandler->handle($createEventDto, $user);
     }
 
     #[Route('/add-user', methods: [Request::METHOD_POST])]
-    public function addUser(#[AttributeArgument] AddUserToEventDto $addUserToEventDto, AddUserToEventHandlerInterface $addUserToEventHandler, UserExtractor $userExtractor): Uuid {
+    public function addUser(#[AttributeArgument] AddUserToEventDto $addUserToEventDto, AddUserToEventHandlerInterface $addUserToEventHandler, UserExtractor $userExtractor): Uuid
+    {
         $user = $userExtractor->extract();
 
         return $addUserToEventHandler->handle($addUserToEventDto, $user);
     }
 
     #[Route('/add-expenditure', methods: [Request::METHOD_POST])]
-    public function addExpenditure(#[AttributeArgument] AddExpenditureToEventDto $dto, AddExpenditureToEventHandlerInterface $handler, UserExtractor $userExtractor): Uuid{
+    public function addExpenditure(#[AttributeArgument] AddExpenditureToEventDto $dto, AddExpenditureToEventHandlerInterface $handler, UserExtractor $userExtractor): Uuid
+    {
         $user = $userExtractor->extract();
 
         return $handler->handle($dto, $user);
@@ -49,7 +52,8 @@ class EventController extends AbstractController
     }
 
     #[Route('/show-event', methods: [Request::METHOD_GET])]
-    public function showEvent(#[AttributeArgument] ShowEventDto $dto, ShowEventHandlerInterface $handler, UserExtractor $userExtractor): array {
+    public function showEvent(#[AttributeArgument] ShowEventDto $dto, ShowEventHandlerInterface $handler, UserExtractor $userExtractor): array
+    {
         $user = $userExtractor->extract();
 
         return $handler->handle($dto, $user);

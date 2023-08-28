@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Exception;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class UserExtractor
@@ -13,11 +12,12 @@ class UserExtractor
     {
     }
 
-    public function extract (): User {
+    public function extract(): User
+    {
         $request = $this->requestStack->getCurrentRequest();
         $user = $this->userRepository->findOneBy(['uuid' => $request->headers->get('userUuid')]);
-        if ($user === null) {
-            throw new Exception('User not found');
+        if (null === $user) {
+            throw new \Exception('User not found');
         }
 
         return $user;

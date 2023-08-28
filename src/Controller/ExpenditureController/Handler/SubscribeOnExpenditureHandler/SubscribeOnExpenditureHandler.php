@@ -6,7 +6,6 @@ use App\Controller\ExpenditureController\Dto\SubscribeOnExpenditureDto;
 use App\Entity\User;
 use App\Repository\EventRepository;
 use App\Repository\ExpenditureRepository;
-use Exception;
 
 class SubscribeOnExpenditureHandler implements SubscribeOnExpenditureHandlerInterface
 {
@@ -15,13 +14,14 @@ class SubscribeOnExpenditureHandler implements SubscribeOnExpenditureHandlerInte
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
-    public function handle(SubscribeOnExpenditureDto $dto, User $user){
+    public function handle(SubscribeOnExpenditureDto $dto, User $user)
+    {
         $event = $this->eventRepository->getByUuid($dto->getEventUuid());
         $expenditure = $this->expenditureRepository->getByUuid($dto->getExpenditureUuid());
-        if (!$event->isUserSubscribed($user)){
-            throw new Exception('You do not subscribed on event for this expenditure');
+        if (!$event->isUserSubscribed($user)) {
+            throw new \Exception('You do not subscribed on event for this expenditure');
         }
         $expenditure->addSubscriber($user);
         $this->expenditureRepository->save($expenditure, true);

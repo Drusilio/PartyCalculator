@@ -8,5 +8,5 @@ use Symfony\Component\Uid\Uuid;
 
 interface AddExpenditureToEventHandlerInterface
 {
-    public function handle(AddExpenditureToEventDto $addExpenditureToEventDto, User $user):Uuid;
+    public function handle(AddExpenditureToEventDto $addExpenditureToEventDto, User $user): Uuid;
 }

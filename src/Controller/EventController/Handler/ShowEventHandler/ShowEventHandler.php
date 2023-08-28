@@ -15,7 +15,8 @@ class ShowEventHandler implements ShowEventHandlerInterface
     {
     }
 
-    public function handle(ShowEventDto $dto, User $user): array{
+    public function handle(ShowEventDto $dto, User $user): array
+    {
         $event = $this->repository->getByUuid($dto->getUuid());
         if ($event->getIsCompleted()) {
             return $this->showCompletedEvent($event, $user);
@@ -24,11 +25,12 @@ class ShowEventHandler implements ShowEventHandlerInterface
         }
     }
 
-    private function showUncompletedEvent(Event $event, User $user): array{
+    private function showUncompletedEvent(Event $event, User $user): array
+    {
         return [
             'uuid' => $event->getUuid(),
             'name' => $event->getName(),
-            'subscriptionStatus' => $event->isUserSubscribed($user)
+            'subscriptionStatus' => $event->isUserSubscribed($user),
         ];
     }
 

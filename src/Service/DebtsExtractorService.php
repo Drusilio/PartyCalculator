@@ -7,7 +7,6 @@ use App\Service\Dto\Debt;
 
 class DebtsExtractorService
 {
-
     /**
      * @return array<Debt>
      */
@@ -15,10 +14,10 @@ class DebtsExtractorService
     {
         $eventDebts = [];
 
-        foreach ($expenditures as $expenditure)
-        {
+        foreach ($expenditures as $expenditure) {
             $eventDebts = array_merge($eventDebts, $this->extractDebtsFromExpenditure($expenditure));
         }
+
         return $eventDebts;
     }
 
@@ -31,7 +30,6 @@ class DebtsExtractorService
 
         $subscribersCount = $expenditure->getSubscribers()->count();
         $averageSum = $expenditure->getAmountSpent() / $subscribersCount;
-
 
         foreach ($expenditure->getSubscribers() as $subscriber) {
             if ($subscriber->getUuid() != $expenditure->getExpensist()->getUuid()) {
@@ -47,5 +45,4 @@ class DebtsExtractorService
 
         return $expenditureDebts;
     }
-
 }

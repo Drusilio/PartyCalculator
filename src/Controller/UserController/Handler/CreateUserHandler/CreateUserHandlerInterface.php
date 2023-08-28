@@ -7,5 +7,5 @@ use Symfony\Component\Uid\Uuid;
 
 interface CreateUserHandlerInterface
 {
-    public function handle(CreateUserDto $dto):Uuid;
+    public function handle(CreateUserDto $dto): Uuid;
 }

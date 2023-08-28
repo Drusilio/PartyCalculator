@@ -2,8 +2,6 @@
 
 namespace App\Controller\EventController\Dto;
 
-use App\Entity\Expenditure;
-use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Uid\Uuid;
 
 class AddExpenditureToEventDto
@@ -13,7 +11,6 @@ class AddExpenditureToEventDto
     private string $expenditureName;
 
     private float $amountSpent;
-
 
     public function getEventUuid(): Uuid
     {

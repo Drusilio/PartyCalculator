@@ -8,5 +8,5 @@ use Symfony\Component\Uid\Uuid;
 
 interface CreateEventHandlerInterface
 {
-    public function handle (CreateEventDto $createEventDto, User $user): Uuid;
+    public function handle(CreateEventDto $createEventDto, User $user): Uuid;
 }

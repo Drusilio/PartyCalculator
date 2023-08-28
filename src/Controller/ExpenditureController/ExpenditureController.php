@@ -14,7 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class ExpenditureController extends AbstractController
 {
     #[Route('/subscribe-on-expenditure', methods: [Request::METHOD_POST])]
-    public function subscribeOnExpenditure(#[AttributeArgument]SubscribeOnExpenditureDto $dto, SubscribeOnExpenditureHandlerInterface $handler, UserExtractor $userExtractor){
+    public function subscribeOnExpenditure(#[AttributeArgument] SubscribeOnExpenditureDto $dto, SubscribeOnExpenditureHandlerInterface $handler, UserExtractor $userExtractor)
+    {
         $user = $userExtractor->extract();
         $handler->handle($dto, $user);
     }

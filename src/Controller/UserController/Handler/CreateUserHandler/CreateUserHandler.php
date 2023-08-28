@@ -9,11 +9,11 @@ use Symfony\Component\Uid\Uuid;
 
 class CreateUserHandler implements CreateUserHandlerInterface
 {
-    public function __construct(private readonly UserRepository $repository){
-
+    public function __construct(private readonly UserRepository $repository)
+    {
     }
 
-    public function handle(CreateUserDto $dto):Uuid
+    public function handle(CreateUserDto $dto): Uuid
     {
         $user = new User();
         $user->setName($dto->getName());
